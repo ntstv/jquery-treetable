@@ -536,6 +536,32 @@
       return this;
     },
 
+    loadBranchAfter: function(node, rows, afterId) {
+      var settings = this.data("treetable").settings,
+          tree = this.data("treetable").tree;
+
+      // TODO Switch to $.parseHTML
+      rows = $(rows);
+
+      var after = tree[afterId];
+
+      rows.insertAfter(after.row);
+
+      this.data("treetable").loadRows(rows);
+
+      // Make sure nodes are properly initialized
+      rows.filter("tr").each(function() {
+        tree[$(this).data(settings.nodeIdAttr)].show();
+      });
+
+      if (node != null) {
+        // Re-render parent to ensure expander icon is shown (#79)
+        node.render().expand();
+      }
+
+      return this;
+    },
+
     move: function(nodeId, destinationId) {
       var destination, node;
 
